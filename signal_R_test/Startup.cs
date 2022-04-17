@@ -1,25 +1,19 @@
- using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MySqlConnector;
+using signal_r_test.hubs;
 using signal_R_test.Repositories;
 using signal_R_test.Services;
 
 namespace signal_R_test
 {
-    public class Startup
+  public class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -42,6 +36,8 @@ namespace signal_R_test
             
             services.AddScoped<AccountsRepository>();
             services.AddScoped<AccountService>();
+            // NOTE add signalR
+            services.AddSignalR();
         }
 
         private void ConfigureCors(IServiceCollection services)
@@ -103,11 +99,14 @@ namespace signal_R_test
             app.UseAuthentication();
 
             app.UseAuthorization();
+            
 
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                // NOTE Signal R add hub
+                endpoints.MapHub<ChatHub>("/signalHub");
             });
         }
     }
