@@ -1,7 +1,5 @@
 import { AppState } from "../AppState";
 import { logger } from "../utils/Logger";
-import Pop from "../utils/Pop";
-import * as signalR from '@microsoft/signalr'
 import { SignalHandler } from "../utils/SignalHandler";
 
 
